@@ -8,14 +8,14 @@ The assistant picks a tool from a reviewed catalogue of named queries and suppli
 
 ```mermaid
 flowchart LR
-  A[AI assistant] -- "tools/call orders_by_status {status: 'paid'}" --> S[mcp-sql-connector]
-  S --> V{validate args<br/>type · enum · range · length}
-  V -- bad --> E[isError + reason<br/>model can retry]
+  A["AI assistant"] -- "tools/call orders_by_status {status: 'paid'}" --> S["mcp-sql-connector"]
+  S --> V{"validate args<br/>type · enum · range · length"}
+  V -- bad --> E["isError + reason<br/>model can retry"]
   V -- ok --> C["compile :status → ? / $1"]
-  C --> D[(SQLite / Postgres<br/>read-only txn · timeout)]
-  D --> R[rows, capped at maxRows]
+  C --> D[("SQLite / Postgres<br/>read-only txn · timeout")]
+  D --> R["rows, capped at maxRows"]
   R --> A
-  S -. stderr .-> L[audit log<br/>PII masked]
+  S -. stderr .-> L["audit log<br/>PII masked"]
 ```
 
 ## Why a catalogue instead of text-to-SQL
