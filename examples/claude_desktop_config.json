@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "shop-sql": {
+      "command": "node",
+      "args": [
+        "/ABSOLUTE/PATH/TO/mcp-sql-connector/src/server.ts",
+        "--catalog", "/ABSOLUTE/PATH/TO/mcp-sql-connector/examples/queries.json",
+        "--sqlite", "/ABSOLUTE/PATH/TO/mcp-sql-connector/examples/shop.db"
+      ]
+    }
+  }
+}

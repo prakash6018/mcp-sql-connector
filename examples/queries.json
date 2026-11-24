@@ -1,0 +1,46 @@
+[
+  {
+    "name": "orders_by_status",
+    "description": "List orders with a given status, newest first.",
+    "sql": "SELECT o.id, c.name AS customer, o.status, o.total_paise / 100.0 AS total_inr, o.placed_at FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.status = :status ORDER BY o.placed_at DESC",
+    "params": {
+      "status": { "type": "string", "enum": ["pending", "paid", "shipped", "refunded"], "required": true }
+    },
+    "maxRows": 50
+  },
+  {
+    "name": "revenue_by_city",
+    "description": "Paid and shipped revenue per customer city between two dates (inclusive).",
+    "sql": "SELECT c.city, COUNT(*) AS orders, SUM(o.total_paise) / 100.0 AS revenue_inr FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.status IN ('paid','shipped') AND o.placed_at BETWEEN :from AND :to GROUP BY c.city ORDER BY revenue_inr DESC",
+    "params": {
+      "from": { "type": "date", "required": true, "description": "Start date, YYYY-MM-DD" },
+      "to": { "type": "date", "required": true, "description": "End date, YYYY-MM-DD" }
+    }
+  },
+  {
+    "name": "customer_orders",
+    "description": "Orders for one customer, looked up by email.",
+    "sql": "SELECT o.id, o.status, o.total_paise / 100.0 AS total_inr, o.placed_at FROM orders o JOIN customers c ON c.id = o.customer_id WHERE c.email = :email ORDER BY o.placed_at DESC",
+    "params": {
+      "email": { "type": "string", "required": true, "maxLength": 254, "pii": true }
+    }
+  },
+  {
+    "name": "top_customers",
+    "description": "Customers ranked by lifetime paid/shipped spend.",
+    "sql": "SELECT c.name, c.city, SUM(o.total_paise) / 100.0 AS spend_inr FROM customers c JOIN orders o ON o.customer_id = c.id WHERE o.status IN ('paid','shipped') GROUP BY c.id ORDER BY spend_inr DESC LIMIT :limit",
+    "params": {
+      "limit": { "type": "integer", "min": 1, "max": 20, "required": true }
+    }
+  },
+  {
+    "name": "add_support_note",
+    "description": "Attach a support note to an order.",
+    "sql": "INSERT INTO support_notes (order_id, note, created_at) VALUES (:order_id, :note, date('now'))",
+    "params": {
+      "order_id": { "type": "integer", "required": true },
+      "note": { "type": "string", "required": true, "maxLength": 500 }
+    },
+    "write": true
+  }
+]
