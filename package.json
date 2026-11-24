@@ -1,0 +1,18 @@
+{
+  "name": "mcp-sql-connector",
+  "version": "0.1.0",
+  "description": "An MCP server that gives AI assistants safe, read-only access to a database through a reviewed catalogue of named SQL queries.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Sai Prakash Reddy Chandupatla",
+  "engines": { "node": ">=22.18" },
+  "bin": { "mcp-sql-connector": "src/server.ts" },
+  "scripts": {
+    "start": "node src/server.ts --catalog examples/queries.json --sqlite examples/shop.db",
+    "db": "node examples/make-db.ts",
+    "test": "node --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "optionalDependencies": { "pg": "^8.13.0" },
+  "devDependencies": { "typescript": "^5.6.0", "@types/node": "^22.0.0" }
+}
