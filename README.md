@@ -1,5 +1,7 @@
 # mcp-sql-connector
 
+[![CI](https://github.com/prakash6018/mcp-sql-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/prakash6018/mcp-sql-connector/actions/workflows/ci.yml)
+
 An [MCP](https://modelcontextprotocol.io) server that lets an AI assistant (Claude Desktop, Cursor, any MCP client) answer questions from a SQL database **without ever writing SQL**.
 
 The assistant picks a tool from a reviewed catalogue of named queries and supplies parameter values. The server validates those values, binds them as positional parameters and runs the fixed statement. Nothing the model sends can change the SQL.
